@@ -1,32 +1,26 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace ByteArraryToString
 {
     class Program
-    {
-        private static List<byte> byteList = new List<byte>();
+    {        
         private static List<string> stringList = new List<string>();
-        private static string[] Values { get; set; }
+        private static List<int> intList = new List<int>();
+        private static string[] Arguments { get; set; }
         static void Main(string[] args)
         {
             if (args.Length != 0)
             {
-                Values = args;
+                Arguments = args;
                 if (args[0].ToLower() == "-bytearray")
                 {
-                    CreateList();
-
-                    byte[] byteArray = byteList.ToArray();
-                    string ByteArrayToString = Encoding.Default.GetString(byteArray);
-
-                    Console.WriteLine(ByteArrayToString);
+                    ConvertToAsciiCharsList();
+                    foreach (var i in intList) Console.Write((char)i);
                 }
                 else if (args[0].ToLower() == "-string")
                 {
-                    CreateList();
+                    ConvertToAsciiCharsList();
                     foreach (var s in stringList) Console.Write(s);
                 }
                 else throw new Exception("\nInvalid parameter. Valid parameters: -ByteArray or -String.\n");
@@ -35,16 +29,21 @@ namespace ByteArraryToString
 
         }
 
-        static void CreateList()
+        static void ConvertToAsciiCharsList()
         {
-            if (Values[0].ToLower() == "-bytearray")
+            if (Arguments[0].ToLower() == "-bytearray")
             {
-                for (int i = 1; i <= Values.Length - 1; i++) if (byte.TryParse(Values[i], out byte x)) byteList.Add(x);
+                for (int i = 1; i <= Arguments.Length - 1; i++)
+                {
+                    int val = Convert.ToInt32(Arguments[i],16);
+                    intList.Add(val);                    
+                }
             }
-            else if (Values[0].ToLower() == "-string")
+            else if (Arguments[0].ToLower() == "-string")
             {
-                for (int i = 1; i <= Values.Length - 1; i++) stringList.Add(Values[i]);
+                for (int i = 1; i <= Arguments.Length - 1; i++) stringList.Add(Arguments[i]);
             }
+            
         }
     }
 }
